@@ -28,3 +28,18 @@
 2025-06-02 11:07:03,169 - GeminiClient - INFO - Successfully connected to gemini-2.0-flash-exp
 2025-06-02 11:07:03,438 - GeminiClient - INFO - Successfully completed request with gemini-2.0-flash-exp
 2025-06-02 11:07:03,460 - GeminiClient - INFO - Successfully generated response using gemini-2.0-flash-exp
+2025-06-02 11:27:31,677 - GeminiClient - INFO - Configuration loaded. API key: AIza*******************************lXEs
+2025-06-02 11:27:31,678 - GeminiClient - INFO - Available models: gemini-2.0-flash-exp, gemini-1.5-flash, gemini-1.5-pro
+2025-06-02 11:27:33,585 - GeminiClient - INFO - Gemini client initialized
+2025-06-02 11:27:33,586 - GeminiClient - INFO - GeminiClient initialized successfully
+2025-06-02 11:27:33,590 - GeminiClient - INFO - Generating response for prompt: Hello...
+2025-06-02 11:27:33,593 - GeminiClient - INFO - Attempting gemini-2.0-flash-exp (attempt 1/3)
+2025-06-02 11:27:34,793 - GeminiClient - INFO - Successfully connected to gemini-2.0-flash-exp
+2025-06-02 11:27:34,824 - GeminiClient - INFO - Successfully completed request with gemini-2.0-flash-exp
+2025-06-02 11:27:34,826 - GeminiClient - INFO - Successfully generated response using gemini-2.0-flash-exp
+2025-06-02 11:27:34,836 - GeminiClient - INFO - Health check completed: {'client_initialized': True, 'api_key_configured': True, 'models_available': 3, 'models': ['gemini-2.0-flash-exp', 'gemini-1.5-flash', 'gemini-1.5-pro'], 'timestamp': 1748863653.5908504, 'api_connectivity': True, 'test_response_length': 77}
+2025-06-02 11:27:34,885 - GeminiClient - INFO - Generating response for prompt: Who are you? Please provide a brief introduction....
+2025-06-02 11:27:34,888 - GeminiClient - INFO - Attempting gemini-2.0-flash-exp (attempt 1/3)
+2025-06-02 11:27:35,337 - GeminiClient - INFO - Successfully connected to gemini-2.0-flash-exp
+2025-06-02 11:27:35,640 - GeminiClient - INFO - Successfully completed request with gemini-2.0-flash-exp
+2025-06-02 11:27:35,641 - GeminiClient - INFO - Successfully generated response using gemini-2.0-flash-exp
