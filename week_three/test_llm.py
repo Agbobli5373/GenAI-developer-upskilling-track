@@ -16,7 +16,7 @@ class TestLLMService:
         """Setup test environment."""
         # Mock API key for testing
         self.test_api_key = "test_google_api_key_123"
-        self.test_model = "gemini-pro"
+        self.test_model = "gemini-1.5-flash"
         self.test_temperature = 0.7
     
     def test_initialization_with_params(self):
@@ -208,7 +208,7 @@ class TestLLMService:
             # Verify ChatGoogleGenerativeAI was called with correct parameters
             call_args = mock_chat.call_args
             assert call_args[1]['google_api_key'] == self.test_api_key
-            assert call_args[1]['model'] == 'gemini-pro'
+            assert call_args[1]['model'] == 'gemini-1.5-flash'
             assert call_args[1]['convert_system_message_to_human'] is True
 
 

@@ -72,7 +72,25 @@ class MemoryManager:
             Formatted conversation history as string
         """
         memory = self.get_memory(session_id)
-        return memory.buffer
+        buffer = memory.buffer
+        if isinstance(buffer, list):
+            # Format each message as 'role: content' or just content
+            formatted = []
+            for msg in buffer:
+                # Try to get role and content, fallback to str(msg)
+                role = getattr(msg, 'type', None) or getattr(msg, 'role', None)
+                content = getattr(msg, 'content', None)
+                if role and content:
+                    formatted.append(f"{role.capitalize()}: {content}")
+                elif content:
+                    formatted.append(str(content))
+                else:
+                    formatted.append(str(msg))
+            return "\n".join(formatted)
+        elif isinstance(buffer, str):
+            return buffer
+        else:
+            return str(buffer) if buffer else ""
     
     def clear_session(self, session_id: str) -> None:
         """
