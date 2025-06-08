@@ -1,0 +1,9 @@
+venv
+.env
+*.pyc
+*.swp
+*.swx
+*.swo
+*.swn
+*.swn
+__pycache__
