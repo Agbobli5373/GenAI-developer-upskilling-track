@@ -36,8 +36,8 @@ A production-ready chatbot built with LangChain and Google Gemini that maintains
 
 ```bash
 # Clone the repository
-git clone <your-repo-url>
-cd gemini-contextual-chatbot
+git clone https://github.com/Agbobli5373/GenAI-developer-upskilling-track.git
+cd week_three
 
 # Create virtual environment
 python -m venv venv
