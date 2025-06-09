@@ -31,6 +31,24 @@
         border-radius: 10px 10px 0 0;
         text-align: center;
       }
+      .session-controls {
+        margin-top: 10px;
+      }
+      .session-btn {
+        background-color: rgba(255, 255, 255, 0.2);
+        color: white;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        padding: 5px 10px;
+        margin: 0 5px;
+        border-radius: 15px;
+        font-size: 0.8em;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+      .session-btn:hover {
+        background-color: rgba(255, 255, 255, 0.3);
+        transform: translateY(-1px);
+      }
       .chat-messages {
         flex: 1;
         overflow-y: auto;
@@ -110,6 +128,7 @@
     <div class="chat-container">
       <div class="nav-bar">
         <a href="/" class="active">🏠 Chat</a>
+        <a href="/history">📜 History</a>
         <a href="/help">❓ Help</a>
         <a href="/about">ℹ️ About</a>
         <a href="/settings">⚙️ Settings</a>
@@ -117,6 +136,27 @@
       </div>
       <div class="chat-header">
         <h1>Contextual Memory Chatbot</h1>
+        <div class="session-controls">
+          <span id="session-info" style="font-size: 0.8em; opacity: 0.8"
+            >Session: Loading...</span
+          >
+          <div style="margin-top: 10px">
+            <button
+              onclick="startNewSession()"
+              class="session-btn"
+              title="Start New Session (Ctrl+N)"
+            >
+              🆕 New
+            </button>
+            <button
+              onclick="window.location.href='/history'"
+              class="session-btn"
+              title="View History (Ctrl+H)"
+            >
+              📜 History
+            </button>
+          </div>
+        </div>
       </div>
       <div class="chat-messages" id="chat-messages">
         <div class="message bot-message">
@@ -140,6 +180,57 @@
         const chatMessages = document.getElementById("chat-messages");
         const userInput = document.getElementById("user-input");
         const sendButton = document.getElementById("send-button");
+
+        let currentSessionId = localStorage.getItem("currentSessionId"); // Initialize session if not exists
+        if (!currentSessionId) {
+          createNewSession();
+        } else {
+          updateSessionInfo();
+        }
+
+        // Function to create a new session
+        async function createNewSession() {
+          try {
+            const response = await fetch("/api/sessions/create", {
+              method: "POST",
+            });
+            const data = await response.json();
+            currentSessionId = data.sessionId;
+            localStorage.setItem("currentSessionId", currentSessionId);
+            console.log("New session created:", currentSessionId);
+            updateSessionInfo();
+          } catch (error) {
+            console.error("Error creating session:", error);
+            document.getElementById("session-info").textContent =
+              "Session: Error";
+          }
+        }
+
+        // Function to update session info display
+        function updateSessionInfo() {
+          if (currentSessionId) {
+            const shortId = currentSessionId.substring(0, 8) + "...";
+            document.getElementById(
+              "session-info"
+            ).textContent = `Session: ${shortId}`;
+          }
+        }
+
+        // Function to start a new session
+        function startNewSession() {
+          if (
+            confirm(
+              "Start a new session? This will clear the current chat and create a new conversation."
+            )
+          ) {
+            chatMessages.innerHTML =
+              '<div class="message bot-message">Hello! I\'m your contextual memory chatbot. I can remember our conversation context. How can I help you today?</div>';
+            createNewSession();
+          }
+        }
+
+        // Make functions globally available
+        window.startNewSession = startNewSession;
 
         // Function to add a new message to the chat
         function addMessage(message, isUser) {
@@ -169,10 +260,14 @@
           chatMessages.scrollTop = chatMessages.scrollHeight;
 
           try {
-            // Send the message to the server
-            const response = await fetch(
-              `/memory?message=${encodeURIComponent(message)}`
-            );
+            // Send the message to the server with session tracking
+            const url = currentSessionId
+              ? `/memory?message=${encodeURIComponent(
+                  message
+                )}&sessionId=${currentSessionId}`
+              : `/memory?message=${encodeURIComponent(message)}`;
+
+            const response = await fetch(url);
             const responseText = await response.text();
 
             // Remove the "thinking" message
@@ -180,6 +275,11 @@
 
             // Add the response to the chat
             addMessage(responseText, false);
+
+            // Track the conversation in session history if session exists
+            if (currentSessionId) {
+              await trackConversation(message, responseText);
+            }
           } catch (error) {
             // Remove the "thinking" message
             chatMessages.removeChild(thinkingDiv);
@@ -195,6 +295,24 @@
           }
         }
 
+        // Function to track conversation in session history
+        async function trackConversation(userMessage, botResponse) {
+          try {
+            await fetch(`/api/sessions/${currentSessionId}/messages`, {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                userMessage: userMessage,
+                botResponse: botResponse,
+              }),
+            });
+          } catch (error) {
+            console.error("Error tracking conversation:", error);
+          }
+        }
+
         // Event listeners
         sendButton.addEventListener("click", function () {
           sendMessage(userInput.value);
@@ -203,6 +321,18 @@
         userInput.addEventListener("keypress", function (event) {
           if (event.key === "Enter") {
             sendMessage(userInput.value);
+          }
+        }); // Add keyboard shortcuts
+        document.addEventListener("keydown", function (event) {
+          // Ctrl+N for new session
+          if (event.ctrlKey && event.key === "n") {
+            event.preventDefault();
+            startNewSession();
+          }
+          // Ctrl+H for history
+          if (event.ctrlKey && event.key === "h") {
+            event.preventDefault();
+            window.location.href = "/history";
           }
         });
       });

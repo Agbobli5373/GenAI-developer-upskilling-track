@@ -124,4 +124,18 @@ public class PageController {
         model.addAttribute("errorMessage", "Something went wrong on our end. Please try again later.");
         return "error/500";
     }
+
+    /**
+     * Displays the session history page for viewing conversation histories.
+     * Provides users with access to their conversation tracking and analytics.
+     * 
+     * @param model the Spring MVC model for passing data to the view
+     * @return the history template name
+     */
+    @GetMapping("/history")
+    public String historyPage(Model model) {
+        model.addAttribute("pageTitle", "Session History");
+        model.addAttribute("appName", "Contextual Memory Chatbot");
+        return "history";
+    }
 }
