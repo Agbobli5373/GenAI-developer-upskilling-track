@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title th:text="${pageTitle} + ' - ' + ${appName}">
+      Settings - Contextual Memory Chatbot
+    </title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f5f5f5;
+        line-height: 1.6;
+      }
+      .container {
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: white;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+        margin-top: 20px;
+      }
+      .header {
+        background-color: #6c757d;
+        color: white;
+        padding: 20px;
+        border-radius: 10px 10px 0 0;
+        text-align: center;
+        margin: -20px -20px 20px -20px;
+      }
+      .nav-links {
+        background-color: #f8f9fa;
+        padding: 15px;
+        margin: -20px -20px 20px -20px;
+        border-radius: 0 0 10px 10px;
+        text-align: center;
+      }
+      .nav-links a {
+        color: #4285f4;
+        text-decoration: none;
+        margin: 0 15px;
+        padding: 8px 16px;
+        border-radius: 5px;
+        transition: background-color 0.3s;
+      }
+      .nav-links a:hover {
+        background-color: #e3f2fd;
+      }
+      .section {
+        margin: 30px 0;
+      }
+      .section h2 {
+        color: #333;
+        border-bottom: 2px solid #6c757d;
+        padding-bottom: 10px;
+      }
+      .settings-card {
+        background-color: #f8f9fa;
+        padding: 20px;
+        margin: 15px 0;
+        border-radius: 8px;
+        border-left: 4px solid #6c757d;
+      }
+      .setting-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px 0;
+        border-bottom: 1px solid #e9ecef;
+      }
+      .setting-item:last-child {
+        border-bottom: none;
+      }
+      .setting-label {
+        flex: 1;
+      }
+      .setting-label h4 {
+        margin: 0 0 5px 0;
+        color: #333;
+      }
+      .setting-label p {
+        margin: 0;
+        color: #666;
+        font-size: 14px;
+      }
+      .setting-control {
+        margin-left: 20px;
+      }
+      .toggle-switch {
+        position: relative;
+        width: 60px;
+        height: 30px;
+        background-color: #ccc;
+        border-radius: 15px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+      }
+      .toggle-switch.active {
+        background-color: #4285f4;
+      }
+      .toggle-switch::after {
+        content: "";
+        position: absolute;
+        width: 26px;
+        height: 26px;
+        border-radius: 50%;
+        background-color: white;
+        top: 2px;
+        left: 2px;
+        transition: transform 0.3s;
+      }
+      .toggle-switch.active::after {
+        transform: translateX(30px);
+      }
+      .select-control {
+        padding: 8px 12px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        background-color: white;
+        min-width: 120px;
+      }
+      .input-control {
+        padding: 8px 12px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        min-width: 120px;
+      }
+      .btn-primary {
+        background-color: #4285f4;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+      }
+      .btn-primary:hover {
+        background-color: #3367d6;
+      }
+      .btn-secondary {
+        background-color: #6c757d;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        margin-left: 10px;
+        transition: background-color 0.3s;
+      }
+      .btn-secondary:hover {
+        background-color: #5a6268;
+      }
+      .info-box {
+        background-color: #d1ecf1;
+        border: 1px solid #b8daff;
+        padding: 15px;
+        border-radius: 8px;
+        margin: 15px 0;
+      }
+      .warning-box {
+        background-color: #fff3cd;
+        border: 1px solid #ffeaa7;
+        padding: 15px;
+        border-radius: 8px;
+        margin: 15px 0;
+      }
+      .actions {
+        display: flex;
+        justify-content: flex-end;
+        margin-top: 20px;
+        padding-top: 20px;
+        border-top: 1px solid #e9ecef;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <h1 th:text="${pageTitle}">Settings</h1>
+        <p>Customize your chatbot experience</p>
+      </div>
+
+      <div class="nav-links">
+        <a href="/">🏠 Chat</a>
+        <a href="/about">ℹ️ About</a>
+        <a href="/help">❓ Help</a>
+        <a href="/privacy">🔒 Privacy</a>
+      </div>
+
+      <div class="section">
+        <h2>🎨 Interface Preferences</h2>
+
+        <div class="settings-card">
+          <div class="setting-item">
+            <div class="setting-label">
+              <h4>Dark Mode</h4>
+              <p>
+                Switch to a darker color scheme for better viewing in low light
+              </p>
+            </div>
+            <div class="setting-control">
+              <div
+                class="toggle-switch"
+                onclick="toggleSetting(this, 'darkMode')"
+              ></div>
+            </div>
+          </div>
+
+          <div class="setting-item">
+            <div class="setting-label">
+              <h4>Font Size</h4>
+              <p>Adjust the text size for better readability</p>
+            </div>
+            <div class="setting-control">
+              <select
+                class="select-control"
+                onchange="updateSetting('fontSize', this.value)"
+              >
+                <option value="small">Small</option>
+                <option value="medium" selected>Medium</option>
+                <option value="large">Large</option>
+                <option value="extra-large">Extra Large</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="setting-item">
+            <div class="setting-label">
+              <h4>Animation Effects</h4>
+              <p>Enable or disable smooth animations and transitions</p>
+            </div>
+            <div class="setting-control">
+              <div
+                class="toggle-switch active"
+                onclick="toggleSetting(this, 'animations')"
+              ></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <h2>💬 Chat Preferences</h2>
+
+        <div class="settings-card">
+          <div class="setting-item">
+            <div class="setting-label">
+              <h4>Auto-scroll</h4>
+              <p>Automatically scroll to new messages</p>
+            </div>
+            <div class="setting-control">
+              <div
+                class="toggle-switch active"
+                onclick="toggleSetting(this, 'autoScroll')"
+              ></div>
+            </div>
+          </div>
+
+          <div class="setting-item">
+            <div class="setting-label">
+              <h4>Message Send Method</h4>
+              <p>Choose how to send messages</p>
+            </div>
+            <div class="setting-control">
+              <select
+                class="select-control"
+                onchange="updateSetting('sendMethod', this.value)"
+              >
+                <option value="enter" selected>Enter Key</option>
+                <option value="ctrl-enter">Ctrl + Enter</option>
+                <option value="button-only">Button Only</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="setting-item">
+            <div class="setting-label">
+              <h4>Show Typing Indicator</h4>
+              <p>Display when the AI is generating a response</p>
+            </div>
+            <div class="setting-control">
+              <div
+                class="toggle-switch active"
+                onclick="toggleSetting(this, 'typingIndicator')"
+              ></div>
+            </div>
+          </div>
+
+          <div class="setting-item">
+            <div class="setting-label">
+              <h4>Message Timestamps</h4>
+              <p>Show time stamps on chat messages</p>
+            </div>
+            <div class="setting-control">
+              <div
+                class="toggle-switch"
+                onclick="toggleSetting(this, 'timestamps')"
+              ></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <h2>🧠 Memory & Context</h2>
+
+        <div class="settings-card">
+          <div class="setting-item">
+            <div class="setting-label">
+              <h4>Context Length</h4>
+              <p>How many previous messages to remember for context</p>
+            </div>
+            <div class="setting-control">
+              <input
+                type="number"
+                class="input-control"
+                value="10"
+                min="5"
+                max="50"
+                onchange="updateSetting('contextLength', this.value)"
+              />
+            </div>
+          </div>
+
+          <div class="setting-item">
+            <div class="setting-label">
+              <h4>Smart Context Pruning</h4>
+              <p>
+                Automatically remove less relevant messages to maintain focus
+              </p>
+            </div>
+            <div class="setting-control">
+              <div
+                class="toggle-switch active"
+                onclick="toggleSetting(this, 'smartPruning')"
+              ></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="info-box">
+          <strong>💡 Note:</strong> Context settings affect how the AI
+          understands and responds to your messages. Higher context length
+          provides better continuity but may slow response times.
+        </div>
+      </div>
+
+      <div class="section">
+        <h2>🔔 Notifications</h2>
+
+        <div class="settings-card">
+          <div class="setting-item">
+            <div class="setting-label">
+              <h4>Browser Notifications</h4>
+              <p>
+                Get notifications when responses arrive (requires permission)
+              </p>
+            </div>
+            <div class="setting-control">
+              <div
+                class="toggle-switch"
+                onclick="toggleNotifications(this)"
+              ></div>
+            </div>
+          </div>
+
+          <div class="setting-item">
+            <div class="setting-label">
+              <h4>Sound Effects</h4>
+              <p>Play sounds for new messages and interactions</p>
+            </div>
+            <div class="setting-control">
+              <div
+                class="toggle-switch"
+                onclick="toggleSetting(this, 'soundEffects')"
+              ></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <h2>🔧 Advanced Settings</h2>
+
+        <div class="settings-card">
+          <div class="setting-item">
+            <div class="setting-label">
+              <h4>Debug Mode</h4>
+              <p>Show additional technical information (for developers)</p>
+            </div>
+            <div class="setting-control">
+              <div
+                class="toggle-switch"
+                onclick="toggleSetting(this, 'debugMode')"
+              ></div>
+            </div>
+          </div>
+
+          <div class="setting-item">
+            <div class="setting-label">
+              <h4>Performance Mode</h4>
+              <p>Optimize for slower devices by reducing animations</p>
+            </div>
+            <div class="setting-control">
+              <div
+                class="toggle-switch"
+                onclick="toggleSetting(this, 'performanceMode')"
+              ></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <h2>💾 Data Management</h2>
+
+        <div class="settings-card">
+          <div class="warning-box">
+            <h3>⚠️ Session Data</h3>
+            <p>
+              <strong>Current Session:</strong> Your conversation is stored
+              temporarily in memory and will be cleared when you refresh the
+              page or close your browser.
+            </p>
+            <p>
+              <strong>No Permanent Storage:</strong> This application does not
+              save conversations permanently. All data is deleted when your
+              session ends.
+            </p>
+          </div>
+
+          <div class="setting-item">
+            <div class="setting-label">
+              <h4>Clear Current Session</h4>
+              <p>Remove all messages from the current conversation</p>
+            </div>
+            <div class="setting-control">
+              <button class="btn-secondary" onclick="clearSession()">
+                Clear Session
+              </button>
+            </div>
+          </div>
+
+          <div class="setting-item">
+            <div class="setting-label">
+              <h4>Reset All Settings</h4>
+              <p>Restore all preferences to their default values</p>
+            </div>
+            <div class="setting-control">
+              <button class="btn-secondary" onclick="resetSettings()">
+                Reset Settings
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button class="btn-primary" onclick="saveSettings()">
+          Save Settings
+        </button>
+        <button class="btn-secondary" onclick="window.location.href='/'">
+          Back to Chat
+        </button>
+      </div>
+    </div>
+
+    <script>
+      // Settings management functions
+      function toggleSetting(element, setting) {
+        element.classList.toggle("active");
+        const isActive = element.classList.contains("active");
+        localStorage.setItem(setting, isActive);
+        applySettingChange(setting, isActive);
+      }
+
+      function updateSetting(setting, value) {
+        localStorage.setItem(setting, value);
+        applySettingChange(setting, value);
+      }
+
+      function applySettingChange(setting, value) {
+        switch (setting) {
+          case "darkMode":
+            document.body.classList.toggle("dark-mode", value);
+            break;
+          case "fontSize":
+            document.body.className = document.body.className.replace(
+              /font-\w+/g,
+              ""
+            );
+            document.body.classList.add("font-" + value);
+            break;
+          case "animations":
+            document.body.classList.toggle("no-animations", !value);
+            break;
+          // Add more setting applications as needed
+        }
+      }
+
+      function toggleNotifications(element) {
+        if ("Notification" in window) {
+          if (Notification.permission === "granted") {
+            toggleSetting(element, "notifications");
+          } else if (Notification.permission !== "denied") {
+            Notification.requestPermission().then((permission) => {
+              if (permission === "granted") {
+                toggleSetting(element, "notifications");
+              }
+            });
+          }
+        } else {
+          alert("This browser does not support notifications");
+        }
+      }
+
+      function clearSession() {
+        if (
+          confirm(
+            "Are you sure you want to clear the current conversation? This cannot be undone."
+          )
+        ) {
+          // This would typically call an API endpoint to clear the session
+          localStorage.removeItem("sessionData");
+          alert("Session cleared successfully. Redirecting to chat...");
+          window.location.href = "/";
+        }
+      }
+
+      function resetSettings() {
+        if (
+          confirm(
+            "Are you sure you want to reset all settings to their default values?"
+          )
+        ) {
+          // Clear all settings from localStorage
+          const settingsKeys = [
+            "darkMode",
+            "fontSize",
+            "animations",
+            "autoScroll",
+            "sendMethod",
+            "typingIndicator",
+            "timestamps",
+            "contextLength",
+            "smartPruning",
+            "notifications",
+            "soundEffects",
+            "debugMode",
+            "performanceMode",
+          ];
+
+          settingsKeys.forEach((key) => localStorage.removeItem(key));
+
+          alert(
+            "Settings reset successfully. Please refresh the page to see changes."
+          );
+          location.reload();
+        }
+      }
+
+      function saveSettings() {
+        // Settings are automatically saved to localStorage as they're changed
+        alert("Settings saved successfully!");
+      }
+
+      // Load saved settings on page load
+      window.addEventListener("load", function () {
+        // Apply saved settings
+        const savedSettings = {
+          darkMode: localStorage.getItem("darkMode") === "true",
+          fontSize: localStorage.getItem("fontSize") || "medium",
+          animations: localStorage.getItem("animations") !== "false",
+          autoScroll: localStorage.getItem("autoScroll") !== "false",
+          sendMethod: localStorage.getItem("sendMethod") || "enter",
+          typingIndicator: localStorage.getItem("typingIndicator") !== "false",
+          timestamps: localStorage.getItem("timestamps") === "true",
+          contextLength: localStorage.getItem("contextLength") || "10",
+          smartPruning: localStorage.getItem("smartPruning") !== "false",
+          notifications: localStorage.getItem("notifications") === "true",
+          soundEffects: localStorage.getItem("soundEffects") === "true",
+          debugMode: localStorage.getItem("debugMode") === "true",
+          performanceMode: localStorage.getItem("performanceMode") === "true",
+        };
+
+        // Apply settings to UI elements
+        Object.keys(savedSettings).forEach((setting) => {
+          const element = document.querySelector(`[onclick*="${setting}"]`);
+          if (element && element.classList.contains("toggle-switch")) {
+            element.classList.toggle("active", savedSettings[setting]);
+          } else if (element && element.tagName === "SELECT") {
+            element.value = savedSettings[setting];
+          } else if (element && element.tagName === "INPUT") {
+            element.value = savedSettings[setting];
+          }
+
+          applySettingChange(setting, savedSettings[setting]);
+        });
+      });
+    </script>
+  </body>
+</html>

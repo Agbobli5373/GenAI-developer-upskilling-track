@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title th:text="${pageTitle}">Server Error</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 100%);
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .error-container {
+        background-color: white;
+        border-radius: 20px;
+        padding: 40px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        max-width: 600px;
+        margin: 20px;
+      }
+      .error-code {
+        font-size: 120px;
+        font-weight: bold;
+        color: #ff6b6b;
+        margin: 0;
+        line-height: 1;
+      }
+      .error-title {
+        font-size: 32px;
+        color: #333;
+        margin: 20px 0 10px 0;
+      }
+      .error-message {
+        font-size: 18px;
+        color: #666;
+        margin: 20px 0 30px 0;
+        line-height: 1.6;
+      }
+      .error-icon {
+        font-size: 80px;
+        margin-bottom: 20px;
+      }
+      .action-buttons {
+        margin-top: 30px;
+      }
+      .btn {
+        display: inline-block;
+        padding: 15px 30px;
+        margin: 0 10px;
+        border-radius: 50px;
+        text-decoration: none;
+        font-weight: bold;
+        transition: all 0.3s ease;
+        border: none;
+        cursor: pointer;
+        font-size: 16px;
+      }
+      .btn-primary {
+        background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 100%);
+        color: white;
+      }
+      .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 20px rgba(255, 107, 107, 0.3);
+      }
+      .btn-secondary {
+        background-color: #f8f9fa;
+        color: #333;
+        border: 2px solid #e9ecef;
+      }
+      .btn-secondary:hover {
+        background-color: #e9ecef;
+        transform: translateY(-2px);
+      }
+      .troubleshooting {
+        background-color: #fff3cd;
+        border-radius: 15px;
+        padding: 25px;
+        margin: 30px 0;
+        text-align: left;
+        border-left: 4px solid #ffc107;
+      }
+      .troubleshooting h3 {
+        color: #856404;
+        margin-top: 0;
+        text-align: center;
+      }
+      .troubleshooting ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+      .troubleshooting li {
+        padding: 8px 0;
+        color: #856404;
+      }
+      .troubleshooting li::before {
+        content: "🔧 ";
+        margin-right: 8px;
+      }
+      .status-info {
+        background-color: #d1ecf1;
+        border-radius: 15px;
+        padding: 20px;
+        margin: 20px 0;
+        border-left: 4px solid #0ea5e9;
+      }
+      .status-info h4 {
+        color: #0c5460;
+        margin-top: 0;
+      }
+      @keyframes shake {
+        0%,
+        100% {
+          transform: translateX(0);
+        }
+        25% {
+          transform: translateX(-5px);
+        }
+        75% {
+          transform: translateX(5px);
+        }
+      }
+      .error-icon {
+        animation: shake 2s ease-in-out infinite;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="error-container">
+      <div class="error-icon">⚠️</div>
+      <div class="error-code" th:text="${errorCode}">500</div>
+      <h1 class="error-title">Server Error</h1>
+      <p class="error-message" th:text="${errorMessage}">
+        Something went wrong on our end. Our servers are having a momentary
+        hiccup, but don't worry - we're on it!
+      </p>
+
+      <div class="status-info">
+        <h4>🔍 What happened?</h4>
+        <p>
+          The server encountered an unexpected condition that prevented it from
+          fulfilling your request. This could be due to:
+        </p>
+        <ul style="text-align: left; color: #0c5460">
+          <li>Temporary server overload</li>
+          <li>AI service connectivity issues</li>
+          <li>System maintenance</li>
+          <li>Configuration problems</li>
+        </ul>
+      </div>
+
+      <div class="troubleshooting">
+        <h3>🛠️ Try these solutions:</h3>
+        <ul>
+          <li>Wait a few moments and refresh the page</li>
+          <li>Check your internet connection</li>
+          <li>Clear your browser cache and cookies</li>
+          <li>Try opening the chatbot in a new browser window</li>
+          <li>If the problem persists, try again in a few minutes</li>
+        </ul>
+      </div>
+
+      <div class="action-buttons">
+        <a href="/" class="btn btn-primary">🏠 Back to Chat</a>
+        <a href="javascript:location.reload()" class="btn btn-secondary"
+          >🔄 Refresh Page</a
+        >
+      </div>
+
+      <div style="margin-top: 30px">
+        <p style="color: #999; font-size: 14px">
+          If this error continues to occur, please try the following helpful
+          pages:
+        </p>
+        <div style="margin-top: 15px">
+          <a
+            href="/help"
+            style="color: #ff6b6b; text-decoration: none; margin: 0 10px"
+            >❓ Help</a
+          >
+          <a
+            href="/about"
+            style="color: #ff6b6b; text-decoration: none; margin: 0 10px"
+            >ℹ️ About</a
+          >
+          <a
+            href="/settings"
+            style="color: #ff6b6b; text-decoration: none; margin: 0 10px"
+            >⚙️ Settings</a
+          >
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

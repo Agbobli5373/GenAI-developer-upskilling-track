@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title th:text="${pageTitle} + ' - ' + ${appName}">
+      Help - Contextual Memory Chatbot
+    </title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f5f5f5;
+        line-height: 1.6;
+      }
+      .container {
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: white;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+        margin-top: 20px;
+      }
+      .header {
+        background-color: #4285f4;
+        color: white;
+        padding: 20px;
+        border-radius: 10px 10px 0 0;
+        text-align: center;
+        margin: -20px -20px 20px -20px;
+      }
+      .nav-links {
+        background-color: #f8f9fa;
+        padding: 15px;
+        margin: -20px -20px 20px -20px;
+        border-radius: 0 0 10px 10px;
+        text-align: center;
+      }
+      .nav-links a {
+        color: #4285f4;
+        text-decoration: none;
+        margin: 0 15px;
+        padding: 8px 16px;
+        border-radius: 5px;
+        transition: background-color 0.3s;
+      }
+      .nav-links a:hover {
+        background-color: #e3f2fd;
+      }
+      .section {
+        margin: 30px 0;
+      }
+      .section h2 {
+        color: #333;
+        border-bottom: 2px solid #4285f4;
+        padding-bottom: 10px;
+      }
+      .faq-item {
+        background-color: #f8f9fa;
+        padding: 15px;
+        margin: 10px 0;
+        border-radius: 8px;
+        border-left: 4px solid #4285f4;
+      }
+      .faq-question {
+        font-weight: bold;
+        color: #333;
+        margin-bottom: 8px;
+      }
+      .faq-answer {
+        color: #666;
+      }
+      .tips-list {
+        background-color: #e8f5e8;
+        padding: 20px;
+        border-radius: 8px;
+        border-left: 4px solid #28a745;
+      }
+      .tips-list ul {
+        margin: 0;
+      }
+      .tips-list li {
+        margin: 8px 0;
+      }
+      code {
+        background-color: #f1f1f1;
+        padding: 2px 6px;
+        border-radius: 3px;
+        font-family: "Courier New", monospace;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <h1 th:text="${pageTitle}">Help & Usage Guide</h1>
+        <p>Learn how to get the most out of your chatbot experience</p>
+      </div>
+
+      <div class="nav-links">
+        <a href="/">🏠 Chat</a>
+        <a href="/about">ℹ️ About</a>
+        <a href="/settings">⚙️ Settings</a>
+        <a href="/privacy">🔒 Privacy</a>
+      </div>
+
+      <div class="section">
+        <h2>🚀 Getting Started</h2>
+        <p>
+          Welcome to the Contextual Memory Chatbot! This intelligent assistant
+          remembers your conversation context and provides more relevant
+          responses as you chat.
+        </p>
+
+        <div class="tips-list">
+          <h3>💡 Quick Tips</h3>
+          <ul>
+            <li>
+              <strong>Be specific:</strong> The more context you provide, the
+              better the responses
+            </li>
+            <li>
+              <strong>Ask follow-ups:</strong> The chatbot remembers previous
+              messages in your session
+            </li>
+            <li>
+              <strong>Use natural language:</strong> Talk to the bot as you
+              would to a human assistant
+            </li>
+            <li>
+              <strong>Refresh for new session:</strong> Reload the page to start
+              a fresh conversation
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="section">
+        <h2>❓ Frequently Asked Questions</h2>
+
+        <div class="faq-item">
+          <div class="faq-question">
+            Q: How does the contextual memory work?
+          </div>
+          <div class="faq-answer">
+            A: The chatbot maintains context throughout your conversation
+            session. It remembers previous messages, questions, and topics,
+            allowing for more natural and coherent discussions.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question">
+            Q: Is my conversation data stored permanently?
+          </div>
+          <div class="faq-answer">
+            A: No, conversation data is only stored temporarily in memory for
+            the duration of your session. When you close the browser or refresh
+            the page, the conversation history is cleared.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question">Q: What kind of questions can I ask?</div>
+          <div class="faq-answer">
+            A: You can ask about a wide range of topics including general
+            knowledge, explanations, creative writing, problem-solving, coding
+            help, and more. The AI is designed to be helpful across many
+            domains.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question">Q: Why isn't the chatbot responding?</div>
+          <div class="faq-answer">
+            A: Check your internet connection and ensure the message was sent
+            successfully. If the issue persists, try refreshing the page to
+            start a new session.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question">Q: Can I save my conversations?</div>
+          <div class="faq-answer">
+            A: Currently, conversations are not saved automatically. You can
+            manually copy and save important parts of your conversation if
+            needed.
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <h2>🛠️ Best Practices</h2>
+        <div
+          style="
+            background-color: #fff3cd;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #ffc107;
+          "
+        >
+          <h3>For Better Responses:</h3>
+          <ul>
+            <li>
+              <strong>Provide context:</strong> Reference previous parts of your
+              conversation when asking follow-up questions
+            </li>
+            <li>
+              <strong>Break down complex topics:</strong> Ask step-by-step
+              questions for complicated subjects
+            </li>
+            <li>
+              <strong>Specify your needs:</strong> Mention if you want a
+              detailed explanation, summary, or specific format
+            </li>
+            <li>
+              <strong>Use examples:</strong> Provide examples when asking for
+              similar content or formats
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="section">
+        <h2>🔧 Troubleshooting</h2>
+        <div
+          style="
+            background-color: #f8d7da;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #dc3545;
+          "
+        >
+          <h3>Common Issues:</h3>
+          <ul>
+            <li>
+              <strong>Slow responses:</strong> This might be due to high server
+              load. Please wait a moment and try again.
+            </li>
+            <li>
+              <strong>Error messages:</strong> Refresh the page and try
+              rephrasing your question.
+            </li>
+            <li>
+              <strong>Context loss:</strong> If the bot seems to forget previous
+              messages, refresh to start a new session.
+            </li>
+            <li>
+              <strong>Technical issues:</strong> Try clearing your browser cache
+              or using a different browser.
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="section">
+        <h2>📞 Need More Help?</h2>
+        <p>
+          If you're still experiencing issues or have suggestions for
+          improvement, please:
+        </p>
+        <ul>
+          <li>
+            Check the <a href="/about" style="color: #4285f4">About page</a> for
+            technical details
+          </li>
+          <li>
+            Review our
+            <a href="/privacy" style="color: #4285f4">Privacy Policy</a> for
+            data handling information
+          </li>
+          <li>
+            Visit the
+            <a href="/settings" style="color: #4285f4">Settings page</a> to
+            customize your experience
+          </li>
+        </ul>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title th:text="${pageTitle} + ' - ' + ${appName}">
+      Privacy Policy - Contextual Memory Chatbot
+    </title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f5f5f5;
+        line-height: 1.6;
+      }
+      .container {
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: white;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+        margin-top: 20px;
+      }
+      .header {
+        background-color: #28a745;
+        color: white;
+        padding: 20px;
+        border-radius: 10px 10px 0 0;
+        text-align: center;
+        margin: -20px -20px 20px -20px;
+      }
+      .nav-links {
+        background-color: #f8f9fa;
+        padding: 15px;
+        margin: -20px -20px 20px -20px;
+        border-radius: 0 0 10px 10px;
+        text-align: center;
+      }
+      .nav-links a {
+        color: #4285f4;
+        text-decoration: none;
+        margin: 0 15px;
+        padding: 8px 16px;
+        border-radius: 5px;
+        transition: background-color 0.3s;
+      }
+      .nav-links a:hover {
+        background-color: #e3f2fd;
+      }
+      .section {
+        margin: 30px 0;
+      }
+      .section h2 {
+        color: #333;
+        border-bottom: 2px solid #28a745;
+        padding-bottom: 10px;
+      }
+      .privacy-card {
+        background-color: #f8f9fa;
+        padding: 20px;
+        margin: 15px 0;
+        border-radius: 8px;
+        border-left: 4px solid #28a745;
+      }
+      .highlight-box {
+        background-color: #d4edda;
+        border: 1px solid #c3e6cb;
+        padding: 15px;
+        border-radius: 8px;
+        margin: 15px 0;
+      }
+      .warning-box {
+        background-color: #fff3cd;
+        border: 1px solid #ffeaa7;
+        padding: 15px;
+        border-radius: 8px;
+        margin: 15px 0;
+      }
+      .info-box {
+        background-color: #d1ecf1;
+        border: 1px solid #b8daff;
+        padding: 15px;
+        border-radius: 8px;
+        margin: 15px 0;
+      }
+      .last-updated {
+        background-color: #e9ecef;
+        padding: 10px;
+        border-radius: 5px;
+        font-size: 14px;
+        color: #666;
+        text-align: center;
+        margin-bottom: 20px;
+      }
+      ul {
+        padding-left: 20px;
+      }
+      li {
+        margin: 8px 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <h1 th:text="${pageTitle}">Privacy Policy</h1>
+        <p>Your privacy and data security are our top priorities</p>
+      </div>
+
+      <div class="nav-links">
+        <a href="/">🏠 Chat</a>
+        <a href="/about">ℹ️ About</a>
+        <a href="/help">❓ Help</a>
+        <a href="/settings">⚙️ Settings</a>
+      </div>
+
+      <div class="last-updated">
+        <strong>Last Updated:</strong> January 2025
+      </div>
+
+      <div class="highlight-box">
+        <h3>🔒 Privacy at a Glance</h3>
+        <p>
+          <strong>We prioritize your privacy:</strong> Your conversations are
+          stored only temporarily in memory during your session and are never
+          saved to permanent storage or shared with third parties.
+        </p>
+      </div>
+
+      <div class="section">
+        <h2>📋 Information We Collect</h2>
+
+        <div class="privacy-card">
+          <h3>🗨️ Conversation Data</h3>
+          <ul>
+            <li>
+              <strong>Messages:</strong> Your questions and our responses during
+              your chat session
+            </li>
+            <li>
+              <strong>Session Context:</strong> Conversation history maintained
+              only for the duration of your session
+            </li>
+            <li>
+              <strong>Timestamps:</strong> When messages are sent (not
+              permanently stored)
+            </li>
+          </ul>
+          <div class="info-box">
+            <strong>Important:</strong> All conversation data is stored only in
+            temporary memory and is automatically deleted when you close your
+            browser or start a new session.
+          </div>
+        </div>
+
+        <div class="privacy-card">
+          <h3>🌐 Technical Information</h3>
+          <ul>
+            <li>
+              <strong>Browser Type:</strong> Basic information about your web
+              browser
+            </li>
+            <li>
+              <strong>IP Address:</strong> Your internet connection identifier
+              (for server communication only)
+            </li>
+            <li>
+              <strong>Session ID:</strong> Temporary identifier to maintain your
+              chat session
+            </li>
+            <li>
+              <strong>Access Times:</strong> When you access the application
+              (not logged permanently)
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="section">
+        <h2>🛡️ How We Protect Your Data</h2>
+
+        <div class="privacy-card">
+          <h3>💾 Data Storage</h3>
+          <ul>
+            <li>
+              <strong>In-Memory Only:</strong> Conversations are stored only in
+              server memory
+            </li>
+            <li>
+              <strong>No Database Storage:</strong> No conversation data is
+              saved to permanent databases
+            </li>
+            <li>
+              <strong>Session-Based:</strong> Data exists only during your
+              active session
+            </li>
+            <li>
+              <strong>Automatic Cleanup:</strong> Memory is cleared when
+              sessions end
+            </li>
+          </ul>
+        </div>
+
+        <div class="privacy-card">
+          <h3>🔐 Security Measures</h3>
+          <ul>
+            <li>
+              <strong>HTTPS Encryption:</strong> All communication is encrypted
+              in transit
+            </li>
+            <li>
+              <strong>Secure Sessions:</strong> Session data is protected with
+              security tokens
+            </li>
+            <li>
+              <strong>No Third-Party Access:</strong> Conversations are not
+              shared with external services
+            </li>
+            <li>
+              <strong>Server Security:</strong> Application runs on secure,
+              monitored infrastructure
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="section">
+        <h2>🤝 How We Use Your Information</h2>
+
+        <div class="privacy-card">
+          <h3>✅ What We Do</h3>
+          <ul>
+            <li>
+              <strong>Provide Responses:</strong> Process your messages to
+              generate relevant AI responses
+            </li>
+            <li>
+              <strong>Maintain Context:</strong> Remember conversation history
+              during your session
+            </li>
+            <li>
+              <strong>Improve Experience:</strong> Use context to provide more
+              coherent conversations
+            </li>
+            <li>
+              <strong>Technical Support:</strong> Ensure the application
+              functions properly
+            </li>
+          </ul>
+        </div>
+
+        <div class="privacy-card">
+          <h3>❌ What We Don't Do</h3>
+          <ul>
+            <li>
+              <strong>No Permanent Storage:</strong> We don't save your
+              conversations to disk
+            </li>
+            <li>
+              <strong>No Sharing:</strong> We don't share your data with third
+              parties
+            </li>
+            <li>
+              <strong>No Tracking:</strong> We don't track your behavior across
+              sessions
+            </li>
+            <li>
+              <strong>No Profiling:</strong> We don't create permanent user
+              profiles
+            </li>
+            <li>
+              <strong>No Marketing:</strong> We don't use your data for
+              marketing purposes
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="section">
+        <h2>🔄 Data Retention</h2>
+
+        <div class="warning-box">
+          <h3>⏱️ Temporary Storage Only</h3>
+          <p>
+            <strong>Session Duration:</strong> Your conversation data is kept in
+            memory only while you're actively using the chatbot.
+          </p>
+          <p>
+            <strong>Automatic Deletion:</strong> When you close your browser,
+            refresh the page, or after a period of inactivity, all conversation
+            data is automatically and permanently deleted.
+          </p>
+          <p>
+            <strong>No Recovery:</strong> Once deleted, conversation data cannot
+            be recovered or accessed by anyone.
+          </p>
+        </div>
+      </div>
+
+      <div class="section">
+        <h2>🌍 Third-Party Services</h2>
+
+        <div class="privacy-card">
+          <h3>🤖 AI Service Provider</h3>
+          <p>
+            This application uses Google's Gemini AI service to generate
+            responses. Please note:
+          </p>
+          <ul>
+            <li>
+              <strong>Processing:</strong> Your messages are sent to Gemini for
+              AI response generation
+            </li>
+            <li>
+              <strong>Google's Privacy:</strong> Gemini processing is subject to
+              Google's AI service privacy policies
+            </li>
+            <li>
+              <strong>No Persistent Storage:</strong> Messages are processed in
+              real-time without permanent storage by our application
+            </li>
+            <li>
+              <strong>Anonymized:</strong> No personally identifiable
+              information is linked to your messages
+            </li>
+          </ul>
+
+          <div class="info-box">
+            <strong>Note:</strong> While our application doesn't store your
+            conversations, the AI service provider may have their own data
+            processing policies. We recommend reviewing Google's privacy
+            policies for more information.
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <h2>👤 Your Rights</h2>
+
+        <div class="privacy-card">
+          <h3>🔧 Control Your Data</h3>
+          <ul>
+            <li>
+              <strong>Session Control:</strong> Start a new session anytime by
+              refreshing the page
+            </li>
+            <li>
+              <strong>Immediate Deletion:</strong> Close your browser to
+              immediately delete all session data
+            </li>
+            <li>
+              <strong>No Account Required:</strong> Use the service without
+              creating accounts or providing personal information
+            </li>
+            <li>
+              <strong>Anonymous Usage:</strong> Chat without revealing your
+              identity
+            </li>
+          </ul>
+        </div>
+
+        <div class="privacy-card">
+          <h3>📞 Contact Us</h3>
+          <p>
+            If you have questions about this privacy policy or data handling:
+          </p>
+          <ul>
+            <li>
+              <strong>Technical Questions:</strong> Check our
+              <a href="/help" style="color: #28a745">Help page</a> for common
+              concerns
+            </li>
+            <li>
+              <strong>Privacy Concerns:</strong> Review this policy or contact
+              the application administrator
+            </li>
+            <li>
+              <strong>Data Requests:</strong> Since no data is stored
+              permanently, there's no persistent data to request or delete
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="section">
+        <h2>🔄 Policy Updates</h2>
+
+        <div class="warning-box">
+          <h3>📢 Changes to This Policy</h3>
+          <p>
+            We may update this privacy policy occasionally to reflect changes in
+            our practices or for legal compliance. Any changes will be posted on
+            this page with an updated "Last Updated" date.
+          </p>
+          <p>
+            <strong>Continued Use:</strong> Your continued use of the chatbot
+            after any changes constitutes acceptance of the updated privacy
+            policy.
+          </p>
+        </div>
+      </div>
+
+      <div class="highlight-box">
+        <h3>✅ Summary</h3>
+        <p>
+          <strong>Bottom Line:</strong> This chatbot is designed with privacy in
+          mind. Your conversations are temporary, not stored permanently, and
+          not shared with anyone. You have complete control over your data
+          through session management.
+        </p>
+      </div>
+    </div>
+  </body>
+</html>
