@@ -1,0 +1,10 @@
+fastapi
+uvicorn[standard]
+python-dotenv
+langchain
+langchain-google-genai
+chromadb
+langchain-community
+PyJWT
+pytest
+httpx

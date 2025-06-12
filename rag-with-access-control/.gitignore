@@ -1,0 +1,10 @@
+frontend/node_modules
+backend/venv
+backend/__pycache__
+backend/chroma_db
+backend/chroma_db_test
+backend/chroma_db_test_2
+backend/chroma_db_test_3
+backend/chroma_db_test_4
+backend/chroma_db_test_5
+backend/chroma_db_test_6
