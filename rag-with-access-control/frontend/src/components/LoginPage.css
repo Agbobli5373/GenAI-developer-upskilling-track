@@ -1,0 +1,144 @@
+.login-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+  overflow: hidden;
+  position: relative;
+}
+
+.login-backdrop {
+  position: relative;
+  width: 100%;
+  max-width: 1100px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 1;
+}
+
+.login-circles {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: -1;
+  overflow: hidden;
+}
+
+.circle {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0) 70%);
+}
+
+.circle-1 {
+  width: 300px;
+  height: 300px;
+  top: -100px;
+  right: -50px;
+}
+
+.circle-2 {
+  width: 500px;
+  height: 500px;
+  bottom: -200px;
+  left: -150px;
+}
+
+.circle-3 {
+  width: 200px;
+  height: 200px;
+  top: 40%;
+  right: 20%;
+  background: radial-gradient(circle, rgba(124, 58, 237, 0.2) 0%, rgba(124, 58, 237, 0) 70%);
+}
+
+.login-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  perspective: 1000px;
+}
+
+.login-header {
+  text-align: center;
+  margin-bottom: 1rem;
+  color: white;
+}
+
+.login-header h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  letter-spacing: -0.025em;
+}
+
+.login-header p {
+  font-size: 1rem;
+  opacity: 0.9;
+}
+
+.login-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 1.5rem;
+}
+
+.shield-icon {
+  position: absolute;
+  width: 70px;
+  height: 70px;
+  color: rgba(255, 255, 255, 0.2);
+  stroke-width: 1;
+}
+
+.lock-icon {
+  position: relative;
+  width: 36px;
+  height: 36px;
+  color: white;
+}
+
+.login-footer {
+  margin-top: 1rem;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.85rem;
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .login-page {
+    padding: 1rem;
+  }
+  
+  .login-header h1 {
+    font-size: 1.75rem;
+  }
+  
+  .login-logo {
+    width: 60px;
+    height: 60px;
+    margin-bottom: 1.25rem;
+  }
+  
+  .shield-icon {
+    width: 55px;
+    height: 55px;
+  }
+  
+  .lock-icon {
+    width: 28px;
+    height: 28px;
+  }
+}

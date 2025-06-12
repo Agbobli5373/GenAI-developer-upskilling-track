@@ -1,13 +1,7 @@
 import { useState } from "react";
-import {
-  User,
-  Search,
-  Lock,
-  AlertCircle,
-  CheckCircle,
-  Send,
-} from "lucide-react";
+import { Search, Lock, AlertCircle, CheckCircle, Send } from "lucide-react";
 import axios from "axios";
+import LoginPage from "./components/LoginPage";
 import "./App.css";
 
 const API_BASE_URL = "http://localhost:8000";
@@ -20,7 +14,6 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-
   const roles = [
     {
       id: "hr",
@@ -126,57 +119,29 @@ function App() {
   const handleSampleQuestion = (sampleQ) => {
     setQuestion(sampleQ);
   };
-
   return (
     <div className="app">
-      <header className="app-header">
-        <div className="header-content">
-          <h1>
-            <Lock className="header-icon" />
-            RAG with Access Control
-          </h1>
-          <p>Secure document retrieval with role-based access</p>
-        </div>
-      </header>
+      {!isAuthenticated && (
+        <header className="app-header">
+          <div className="header-content">
+            <h1>
+              <Lock className="header-icon" />
+              RAG with Access Control
+            </h1>
+            <p>Secure document retrieval with role-based access</p>
+          </div>
+        </header>
+      )}
 
       <main className="app-main">
         {!isAuthenticated ? (
-          <div className="auth-section">
-            <div className="auth-card">
-              <h2>
-                <User className="section-icon" />
-                Select Your Role
-              </h2>
-
-              <div className="roles-grid">
-                {roles.map((role) => (
-                  <div
-                    key={role.id}
-                    className={`role-card ${
-                      selectedRole === role.id ? "selected" : ""
-                    }`}
-                    onClick={() => setSelectedRole(role.id)}
-                  >
-                    <div className="role-icon">{role.icon}</div>
-                    <h3>{role.name}</h3>
-                    <p>{role.description}</p>
-                  </div>
-                ))}
-              </div>
-
-              {selectedRole && (
-                <div className="auth-actions">
-                  <button
-                    onClick={handleLogin}
-                    disabled={loading}
-                    className="login-btn"
-                  >
-                    {loading ? "Authenticating..." : "Login"}
-                  </button>
-                </div>
-              )}
-            </div>
-          </div>
+          <LoginPage
+            roles={roles}
+            selectedRole={selectedRole}
+            onRoleSelect={setSelectedRole}
+            onLogin={handleLogin}
+            loading={loading}
+          />
         ) : (
           <div className="query-section">
             <div className="user-info">

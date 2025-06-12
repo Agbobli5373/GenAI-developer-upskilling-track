@@ -21,11 +21,14 @@ body {
 
 /* Header Styles */
 .app-header {
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-  padding: 1.5rem 2rem;
+  background: transparent;
+  padding: 1rem 2rem;
   text-align: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
 }
 
 .header-content h1 {
@@ -34,20 +37,20 @@ body {
   justify-content: center;
   gap: 0.5rem;
   color: white;
-  font-size: 2.5rem;
-  font-weight: 700;
-  margin-bottom: 0.5rem;
+  font-size: 2rem;
+  font-weight: 600;
+  margin-bottom: 0.25rem;
 }
 
 .header-icon {
-  width: 2.5rem;
-  height: 2.5rem;
+  width: 2rem;
+  height: 2rem;
 }
 
 .header-content p {
   color: rgba(255, 255, 255, 0.9);
-  font-size: 1.1rem;
-  font-weight: 300;
+  font-size: 0.875rem;
+  font-weight: 400;
 }
 
 /* Main Content */
@@ -56,124 +59,20 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 2rem;
+  padding: 0;
   gap: 2rem;
-}
-
-/* Authentication Section */
-.auth-section {
-  width: 100%;
-  max-width: 800px;
-}
-
-.auth-card {
-  background: white;
-  border-radius: 20px;
-  padding: 2.5rem;
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
-    0 10px 10px -5px rgba(0, 0, 0, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-.auth-card h2 {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-size: 1.8rem;
-  font-weight: 600;
-  margin-bottom: 2rem;
-  color: #374151;
-}
-
-.section-icon {
-  width: 1.5rem;
-  height: 1.5rem;
-  color: #6366f1;
-}
-
-/* Roles Grid */
-.roles-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 1.5rem;
-  margin-bottom: 2rem;
-}
-
-.role-card {
-  padding: 2rem;
-  border: 2px solid #e5e7eb;
-  border-radius: 16px;
-  text-align: center;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  background: #fafafa;
-}
-
-.role-card:hover {
-  border-color: #6366f1;
-  transform: translateY(-2px);
-  box-shadow: 0 10px 25px -3px rgba(0, 0, 0, 0.1);
-}
-
-.role-card.selected {
-  border-color: #6366f1;
-  background: #f0f9ff;
-  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
-}
-
-.role-icon {
-  font-size: 3rem;
-  margin-bottom: 1rem;
-}
-
-.role-card h3 {
-  font-size: 1.25rem;
-  font-weight: 600;
-  margin-bottom: 0.5rem;
-  color: #374151;
-}
-
-.role-card p {
-  color: #6b7280;
-  font-size: 0.95rem;
-}
-
-/* Auth Actions */
-.auth-actions {
-  text-align: center;
-}
-
-.login-btn {
-  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
-  color: white;
-  border: none;
-  padding: 1rem 2.5rem;
-  border-radius: 12px;
-  font-size: 1.1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 15px 0 rgba(99, 102, 241, 0.3);
-}
-
-.login-btn:hover:not(:disabled) {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px 0 rgba(99, 102, 241, 0.4);
-}
-
-.login-btn:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
 }
 
 /* Query Section */
 .query-section {
   width: 100%;
-  max-width: 900px;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem;
 }
 
 .user-info {
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
 }
 
 .user-badge {
@@ -181,17 +80,18 @@ body {
   align-items: center;
   gap: 0.5rem;
   background: white;
-  padding: 1rem 1.5rem;
+  padding: 0.75rem 1rem;
   border-radius: 12px;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
   font-weight: 500;
   color: #374151;
+  font-size: 0.875rem;
 }
 
 .check-icon {
-  width: 1.25rem;
-  height: 1.25rem;
-  color: #10b981;
+  width: 1rem;
+  height: 1rem;
+  color: #059669;
 }
 
 .logout-btn {
@@ -199,9 +99,9 @@ body {
   background: #ef4444;
   color: white;
   border: none;
-  padding: 0.5rem 1rem;
-  border-radius: 8px;
-  font-size: 0.9rem;
+  padding: 0.375rem 0.75rem;
+  border-radius: 6px;
+  font-size: 0.8125rem;
   cursor: pointer;
   transition: all 0.2s ease;
 }
@@ -213,53 +113,55 @@ body {
 /* Query Card */
 .query-card {
   background: white;
-  border-radius: 20px;
-  padding: 2.5rem;
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+  border-radius: 16px;
+  padding: 2rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  border: 1px solid #e5e7eb;
 }
 
 .query-card h2 {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  font-size: 1.8rem;
+  font-size: 1.25rem;
   font-weight: 600;
-  margin-bottom: 2rem;
-  color: #374151;
+  margin-bottom: 1.5rem;
+  color: #111827;
 }
 
 /* Sample Questions */
 .sample-questions {
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
 }
 
 .sample-questions h3 {
-  font-size: 1.1rem;
-  font-weight: 600;
-  margin-bottom: 1rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  margin-bottom: 0.75rem;
   color: #374151;
 }
 
 .questions-list {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.75rem;
-  margin-bottom: 1.5rem;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
 }
 
 .sample-question-btn {
-  background: #f3f4f6;
+  background: #f9fafb;
   border: 1px solid #d1d5db;
   color: #374151;
-  padding: 0.75rem 1rem;
-  border-radius: 8px;
-  font-size: 0.9rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: 6px;
+  font-size: 0.8125rem;
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
 .sample-question-btn:hover {
-  background: #e5e7eb;
+  background: #f3f4f6;
   border-color: #9ca3af;
 }
 
@@ -267,25 +169,26 @@ body {
 .query-input {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
-  margin-bottom: 2rem;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
 }
 
 .question-textarea {
   width: 100%;
-  padding: 1rem;
-  border: 2px solid #e5e7eb;
-  border-radius: 12px;
-  font-size: 1rem;
+  padding: 0.75rem;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 0.875rem;
   font-family: inherit;
   resize: vertical;
   transition: border-color 0.2s ease;
+  min-height: 80px;
 }
 
 .question-textarea:focus {
   outline: none;
-  border-color: #6366f1;
-  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+  border-color: #4f46e5;
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
 }
 
 .query-btn {
@@ -293,21 +196,20 @@ body {
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  background: #059669;
   color: white;
   border: none;
-  padding: 1rem 2rem;
-  border-radius: 12px;
-  font-size: 1rem;
-  font-weight: 600;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-weight: 500;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
   align-self: flex-start;
 }
 
 .query-btn:hover:not(:disabled) {
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px 0 rgba(16, 185, 129, 0.3);
+  background: #047857;
 }
 
 .query-btn:disabled {
@@ -316,27 +218,27 @@ body {
 }
 
 .btn-icon {
-  width: 1rem;
-  height: 1rem;
+  width: 0.875rem;
+  height: 0.875rem;
 }
 
 /* Answer Section */
 .answer-section {
   background: #f8fafc;
-  border-radius: 12px;
-  padding: 1.5rem;
-  border-left: 4px solid #10b981;
+  border-radius: 8px;
+  padding: 1rem;
+  border-left: 4px solid #059669;
 }
 
 .answer-section h3 {
-  font-size: 1.2rem;
-  font-weight: 600;
-  margin-bottom: 1rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  margin-bottom: 0.75rem;
   color: #374151;
 }
 
 .answer-content {
-  font-size: 1rem;
+  font-size: 0.875rem;
   line-height: 1.6;
   color: #4b5563;
   white-space: pre-wrap;
@@ -349,43 +251,54 @@ body {
   gap: 0.5rem;
   background: #fef2f2;
   color: #dc2626;
-  padding: 1rem 1.5rem;
-  border-radius: 12px;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
   border: 1px solid #fecaca;
-  font-weight: 500;
+  font-weight: 400;
+  font-size: 0.875rem;
   max-width: 600px;
-  margin: 0 auto;
+  margin: 1rem auto 0;
 }
 
 .error-icon {
-  width: 1.25rem;
-  height: 1.25rem;
+  width: 1rem;
+  height: 1rem;
   color: #dc2626;
+  flex-shrink: 0;
 }
 
 /* Responsive Design */
 @media (max-width: 768px) {
-  .app-main {
-    padding: 1rem;
-  }
-
-  .auth-card,
-  .query-card {
-    padding: 1.5rem;
+  .app-header {
+    padding: 0.75rem 1rem;
   }
 
   .header-content h1 {
-    font-size: 2rem;
+    font-size: 1.5rem;
   }
 
-  .roles-grid {
-    grid-template-columns: 1fr;
+  .header-icon {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+
+  .header-content p {
+    font-size: 0.8125rem;
+  }
+
+  .query-section {
+    padding: 1rem;
+  }
+
+  .query-card {
+    padding: 1.5rem;
   }
 
   .user-badge {
     flex-direction: column;
     align-items: flex-start;
-    gap: 1rem;
+    gap: 0.75rem;
+    padding: 0.75rem;
   }
 
   .logout-btn {
@@ -399,6 +312,12 @@ body {
 
   .sample-question-btn {
     text-align: left;
+    justify-content: flex-start;
+  }
+
+  .query-btn {
+    width: 100%;
+    justify-content: center;
   }
 }
 
