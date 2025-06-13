@@ -118,7 +118,8 @@ def rag_query(
     """Secure, role-aware RAG API endpoint that filters documents by user role."""
     try:
         # Get role-filtered retriever
-        retriever = get_retriever(current_user.role)
+        role = current_user.role if current_user.role is not None else "public"
+        retriever = get_retriever(role)
         
         # Build and execute RAG chain
         rag_chain = (
