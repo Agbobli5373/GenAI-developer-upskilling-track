@@ -1,0 +1,40 @@
+{
+  "report_type": "daily_performance",
+  "generated_at": "2025-06-23T14:53:17.190676",
+  "period": {
+    "start": "2025-06-22T14:53:17.190676",
+    "end": "2025-06-23T14:53:17.190676"
+  },
+  "system_overview": {
+    "total_documents": 5,
+    "system_status": "operational"
+  },
+  "performance_metrics": {
+    "total_operations": 0,
+    "success_rate": 0,
+    "average_duration": 0,
+    "operations_by_type": {},
+    "error_rate": 1
+  },
+  "quality_metrics": {
+    "average_relevancy": 0.75,
+    "average_faithfulness": 0.8,
+    "average_answer_relevance": 0.78,
+    "hallucination_rate": 0.15,
+    "overall_quality": 0.77
+  },
+  "alerts": [
+    {
+      "type": "high_memory_usage",
+      "memory_percent": 92.6,
+      "severity": "high"
+    }
+  ],
+  "recommendations": [
+    "Investigate error sources - success rate is below 95%",
+    "Address 1 active alerts to improve system stability",
+    "Regularly update the document collection to maintain relevancy",
+    "Monitor hallucination rates and implement additional fact-checking",
+    "Consider A/B testing different retrieval strategies"
+  ]
+}
