@@ -1,5 +1,8 @@
 import axios, { AxiosResponse } from 'axios'
-import { User, UserCreate, UserLogin, AuthResponse, Document, DocumentCreate, DocumentUpdate } from '@/types'
+import { 
+    User, UserCreate, UserLogin, AuthResponse, Document, DocumentCreate, DocumentUpdate,
+    DocumentChunk, DocumentStructure, DocumentSearchResult
+} from '@/types'
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000'
 
@@ -96,6 +99,28 @@ export const documentsAPI = {
 
     deleteDocument: (documentId: string): Promise<AxiosResponse<{ message: string }>> =>
         api.delete(`/documents/${documentId}`),
+
+    // New document processing endpoints
+    getDocumentChunks: (
+        documentId: string, 
+        params?: { chunk_type?: string; page_number?: number }
+    ): Promise<AxiosResponse<DocumentChunk[]>> =>
+        api.get(`/documents/${documentId}/chunks`, { params }),
+
+    getDocumentStructure: (documentId: string): Promise<AxiosResponse<DocumentStructure>> =>
+        api.get(`/documents/${documentId}/structure`),
+
+    searchDocumentChunks: (
+        documentId: string, 
+        query: string, 
+        limit?: number
+    ): Promise<AxiosResponse<DocumentSearchResult>> =>
+        api.get(`/documents/${documentId}/search`, { 
+            params: { q: query, limit } 
+        }),
+
+    reprocessDocument: (documentId: string): Promise<AxiosResponse<{ message: string; document_id: string }>> =>
+        api.post(`/documents/${documentId}/reprocess`),
 }
 
 export default api

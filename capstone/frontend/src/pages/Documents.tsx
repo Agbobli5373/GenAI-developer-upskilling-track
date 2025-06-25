@@ -7,9 +7,12 @@ import {
   EyeIcon,
   PencilIcon,
   TrashIcon,
+  MagnifyingGlassIcon,
+  Cog6ToothIcon,
 } from "@heroicons/react/24/outline";
 import { documentsAPI } from "@/services/api";
 import { Document, DocumentCreate } from "@/types";
+import { DocumentViewer } from "@/components/DocumentViewer";
 import toast from "react-hot-toast";
 
 export const Documents: React.FC = () => {
@@ -23,13 +26,18 @@ export const Documents: React.FC = () => {
     }
   );
   const [uploading, setUploading] = useState(false);
+  const [selectedDocument, setSelectedDocument] = useState<Document | null>(null);
+  const [isViewerOpen, setIsViewerOpen] = useState(false);
 
   const {
     data: documents,
     isLoading,
     refetch,
   } = useQuery("documents", () =>
-    documentsAPI.getDocuments().then((res) => res.data)
+    documentsAPI.getDocuments().then((res) => res.data),
+    {
+      refetchInterval: 5000, // Auto-refresh every 5 seconds to check processing status
+    }
   );
 
   const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -65,6 +73,37 @@ export const Documents: React.FC = () => {
       toast.error(message);
     } finally {
       setUploading(false);
+    }
+  };
+
+  const handleViewDocument = (document: Document) => {
+    setSelectedDocument(document);
+    setIsViewerOpen(true);
+  };
+
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case "processed":
+        return "bg-green-100 text-green-800";
+      case "processing":
+        return "bg-yellow-100 text-yellow-800";
+      case "error":
+        return "bg-red-100 text-red-800";
+      default:
+        return "bg-gray-100 text-gray-800";
+    }
+  };
+
+  const getStatusIcon = (status: string) => {
+    switch (status) {
+      case "processed":
+        return "✓";
+      case "processing":
+        return "⏳";
+      case "error":
+        return "⚠️";
+      default:
+        return "📄";
     }
   };
 
@@ -124,13 +163,16 @@ export const Documents: React.FC = () => {
                     <DocumentTextIcon className="h-8 w-8" />
                   </div>
                   <div className="flex space-x-1">
-                    <button className="p-1 text-gray-400 hover:text-gray-600">
+                    <button
+                      onClick={() => handleViewDocument(document)}
+                      className="p-1 text-gray-400 hover:text-gray-600"
+                    >
                       <EyeIcon className="h-4 w-4" />
                     </button>
                     <button className="p-1 text-gray-400 hover:text-gray-600">
                       <PencilIcon className="h-4 w-4" />
                     </button>
-                    <button className="p-1 text-gray-400 hover:text-red-600">
+                    <button className="p-1 text-gray-400 hover:red-600">
                       <TrashIcon className="h-4 w-4" />
                     </button>
                   </div>
@@ -153,17 +195,11 @@ export const Documents: React.FC = () => {
                   </div>
                   <div className="mt-2">
                     <span
-                      className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                        document.status === "processed"
-                          ? "bg-green-100 text-green-800"
-                          : document.status === "processing"
-                          ? "bg-yellow-100 text-yellow-800"
-                          : document.status === "error"
-                          ? "bg-red-100 text-red-800"
-                          : "bg-gray-100 text-gray-800"
-                      }`}
+                      className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getStatusColor(
+                        document.status
+                      )}`}
                     >
-                      {document.status}
+                      {getStatusIcon(document.status)} {document.status}
                     </span>
                   </div>
                 </div>
@@ -302,6 +338,14 @@ export const Documents: React.FC = () => {
             </div>
           </div>
         </div>
+      )}
+
+      {/* Document Viewer */}
+      {isViewerOpen && selectedDocument && (
+        <DocumentViewer
+          document={selectedDocument}
+          onClose={() => setIsViewerOpen(false)}
+        />
       )}
     </div>
   );
