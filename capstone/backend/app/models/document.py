@@ -57,7 +57,7 @@ class DocumentChunkResponse(DocumentChunkBase):
 class DocumentStructure(BaseModel):
     """Document structure overview"""
     chunk_types: Dict[str, int]
-    page_distribution: Dict[int, int]
+    page_distribution: Dict[str, int]  # Changed from Dict[int, int] to Dict[str, int] for JSON compatibility
     total_chunks: int
 
 

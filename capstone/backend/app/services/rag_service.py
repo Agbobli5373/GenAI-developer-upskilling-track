@@ -12,7 +12,7 @@ import asyncio
 
 import google.generativeai as genai
 from app.core.config import settings
-from app.services.search_service import LegalSearchService
+from app.services.search_service import AdvancedLegalSearchService
 from app.services.embedding_service import LegalEmbeddingService
 from app.core.database import supabase
 
@@ -26,7 +26,7 @@ class LegalRAGService:
         # Initialize Google Gemini
         genai.configure(api_key=settings.GOOGLE_API_KEY)
         self.model = genai.GenerativeModel('Gemini-2.0-Flash')  # Use Flash for reasoning
-        self.search_service = LegalSearchService()
+        self.search_service = AdvancedLegalSearchService()
         
         # Legal domain prompts
         self.system_prompt = """

@@ -7,12 +7,14 @@ from typing import List, Optional, Dict, Any
 from pydantic import BaseModel
 
 from app.api.api_v1.endpoints.auth import verify_token
-from app.services.search_service import LegalSearchService
+from app.services.search_service import AdvancedLegalSearchService
 from app.services.rag_service import LegalRAGService
 from app.services.embedding_service import LegalEmbeddingService
 
 router = APIRouter()
-search_service = LegalSearchService()
+# Use AdvancedLegalSearchService for both basic and advanced search
+search_service = AdvancedLegalSearchService()
+advanced_search_service = AdvancedLegalSearchService()
 rag_service = LegalRAGService()
 embedding_service = LegalEmbeddingService()
 
@@ -37,6 +39,85 @@ class RAGRequest(BaseModel):
 class EmbeddingRequest(BaseModel):
     document_ids: List[str]
     batch_size: int = 20
+
+
+class AdvancedSearchRequest(BaseModel):
+    query: str
+    document_ids: Optional[List[str]] = None
+    chunk_types: Optional[List[str]] = None
+    limit: int = 10
+    enable_caching: bool = True
+    include_suggestions: bool = True
+
+
+class MultiDocumentComparisonRequest(BaseModel):
+    document_ids: List[str]
+    query: Optional[str] = "compare documents"  # Default query for comparison
+    comparison_type: str = "similarity"  # similarity, difference, coverage
+    analysis_depth: str = "standard"  # basic, standard, detailed
+
+
+@router.post("/advanced-search")
+async def advanced_search(
+    request: AdvancedSearchRequest,
+    current_user_id: str = Depends(verify_token)
+):
+    """Perform advanced semantic search with query expansion and reranking"""
+    try:
+        results = await advanced_search_service.advanced_semantic_search(
+            query=request.query,
+            document_ids=request.document_ids,
+            chunk_types=request.chunk_types,
+            user_id=current_user_id,
+            limit=request.limit,
+            enable_caching=request.enable_caching,
+            include_suggestions=request.include_suggestions
+        )
+        
+        return results
+        
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Advanced search failed: {str(e)}"
+        )
+
+
+@router.post("/multi-document-comparison")
+async def multi_document_comparison(
+    request: MultiDocumentComparisonRequest,
+    current_user_id: str = Depends(verify_token)
+):
+    """Compare multiple documents for similarities, differences, or coverage analysis"""
+    try:
+        # Validate document access
+        from app.core.database import supabase
+        
+        for doc_id in request.document_ids:
+            result = supabase.table("documents").select("uploaded_by").eq("id", doc_id).execute()
+            
+            if not result.data or result.data[0]["uploaded_by"] != current_user_id:
+                raise HTTPException(
+                    status_code=status.HTTP_403_FORBIDDEN,
+                    detail=f"Access denied to document {doc_id}"
+                )
+        
+        comparison_results = await advanced_search_service.multi_document_comparison(
+            query=request.query or "compare documents",
+            document_ids=request.document_ids,
+            user_id=current_user_id,
+            comparison_type=request.comparison_type
+        )
+        
+        return comparison_results
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Multi-document comparison failed: {str(e)}"
+        )
 
 
 @router.post("/semantic-search")

@@ -9,10 +9,18 @@ import {
   TrashIcon,
   MagnifyingGlassIcon,
   Cog6ToothIcon,
+  SparklesIcon,
+  QueueListIcon,
+  ChartBarIcon,
 } from "@heroicons/react/24/outline";
 import { documentsAPI } from "@/services/api";
 import { Document, DocumentCreate } from "@/types";
 import { DocumentViewer } from "@/components/DocumentViewer";
+import { AdvancedSearch } from "@/components/AdvancedSearch";
+import { EnhancedRAGSearch } from "@/components/EnhancedRAGSearch";
+import { IntelligentSearchInterface } from "@/components/IntelligentSearchInterface";
+import { BatchQuestionProcessor } from "@/components/BatchQuestionProcessor";
+import { QueryAnalyticsDashboard } from "@/components/QueryAnalyticsDashboard";
 import toast from "react-hot-toast";
 
 export const Documents: React.FC = () => {
@@ -29,7 +37,15 @@ export const Documents: React.FC = () => {
   const [selectedDocument, setSelectedDocument] = useState<Document | null>(
     null
   );
-  const [isViewerOpen, setIsViewerOpen] = useState(false);
+  const [currentView, setCurrentView] = useState<
+    | "documents"
+    | "search"
+    | "enhanced-search"
+    | "intelligent-search"
+    | "batch-processor"
+    | "query-analytics"
+    | "viewer"
+  >("documents");
 
   const {
     data: documents,
@@ -81,7 +97,7 @@ export const Documents: React.FC = () => {
 
   const handleViewDocument = (document: Document) => {
     setSelectedDocument(document);
-    setIsViewerOpen(true);
+    setCurrentView("viewer");
   };
 
   const getStatusColor = (status: string) => {
@@ -152,83 +168,224 @@ export const Documents: React.FC = () => {
         </button>
       </div>
 
-      {/* Documents List */}
-      {documents && documents.length > 0 ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {documents.map((document: Document) => (
-            <div
-              key={document.id}
-              className="card hover:shadow-md transition-shadow"
-            >
-              <div className="card-body">
-                <div className="flex items-start justify-between">
-                  <div className="text-gray-400">
-                    <DocumentTextIcon className="h-8 w-8" />
-                  </div>
-                  <div className="flex space-x-1">
-                    <button
-                      onClick={() => handleViewDocument(document)}
-                      className="p-1 text-gray-400 hover:text-gray-600"
-                    >
-                      <EyeIcon className="h-4 w-4" />
-                    </button>
-                    <button className="p-1 text-gray-400 hover:text-gray-600">
-                      <PencilIcon className="h-4 w-4" />
-                    </button>
-                    <button className="p-1 text-gray-400 hover:red-600">
-                      <TrashIcon className="h-4 w-4" />
-                    </button>
+      {/* Navigation Tabs */}
+      <div className="border-b border-gray-200">
+        <nav className="-mb-px flex space-x-8 overflow-x-auto">
+          <button
+            onClick={() => setCurrentView("documents")}
+            className={`py-2 px-1 border-b-2 font-medium text-sm whitespace-nowrap ${
+              currentView === "documents"
+                ? "border-blue-500 text-blue-600"
+                : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
+            }`}
+          >
+            <DocumentTextIcon className="inline h-4 w-4 mr-1" />
+            Documents
+          </button>
+          <button
+            onClick={() => setCurrentView("search")}
+            className={`py-2 px-1 border-b-2 font-medium text-sm whitespace-nowrap ${
+              currentView === "search"
+                ? "border-blue-500 text-blue-600"
+                : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
+            }`}
+          >
+            <MagnifyingGlassIcon className="inline h-4 w-4 mr-1" />
+            Advanced Search
+          </button>
+          <button
+            onClick={() => setCurrentView("enhanced-search")}
+            className={`py-2 px-1 border-b-2 font-medium text-sm whitespace-nowrap ${
+              currentView === "enhanced-search"
+                ? "border-blue-500 text-blue-600"
+                : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
+            }`}
+          >
+            <Cog6ToothIcon className="inline h-4 w-4 mr-1" />
+            Enhanced RAG
+          </button>
+          <button
+            onClick={() => setCurrentView("intelligent-search")}
+            className={`py-2 px-1 border-b-2 font-medium text-sm whitespace-nowrap ${
+              currentView === "intelligent-search"
+                ? "border-blue-500 text-blue-600"
+                : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
+            }`}
+          >
+            <SparklesIcon className="inline h-4 w-4 mr-1" />
+            Intelligent Search
+          </button>
+          <button
+            onClick={() => setCurrentView("batch-processor")}
+            className={`py-2 px-1 border-b-2 font-medium text-sm whitespace-nowrap ${
+              currentView === "batch-processor"
+                ? "border-blue-500 text-blue-600"
+                : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
+            }`}
+          >
+            <QueueListIcon className="inline h-4 w-4 mr-1" />
+            Batch Processing
+          </button>
+          <button
+            onClick={() => setCurrentView("query-analytics")}
+            className={`py-2 px-1 border-b-2 font-medium text-sm whitespace-nowrap ${
+              currentView === "query-analytics"
+                ? "border-blue-500 text-blue-600"
+                : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
+            }`}
+          >
+            <ChartBarIcon className="inline h-4 w-4 mr-1" />
+            Query Analytics
+          </button>
+        </nav>
+      </div>
+
+      {/* Content based on current view */}
+      {currentView === "documents" && (
+        <>
+          {/* Documents List */}
+          {documents && documents.length > 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {documents.map((document: Document) => (
+                <div
+                  key={document.id}
+                  className="card hover:shadow-md transition-shadow"
+                >
+                  <div className="card-body">
+                    <div className="flex items-start justify-between">
+                      <div className="text-gray-400">
+                        <DocumentTextIcon className="h-8 w-8" />
+                      </div>
+                      <div className="flex space-x-1">
+                        <button
+                          onClick={() => handleViewDocument(document)}
+                          className="p-1 text-gray-400 hover:text-gray-600"
+                        >
+                          <EyeIcon className="h-4 w-4" />
+                        </button>
+                        <button className="p-1 text-gray-400 hover:text-gray-600">
+                          <PencilIcon className="h-4 w-4" />
+                        </button>
+                        <button className="p-1 text-gray-400 hover:red-600">
+                          <TrashIcon className="h-4 w-4" />
+                        </button>
+                      </div>
+                    </div>
+                    <div className="mt-4">
+                      <h3 className="text-sm font-medium text-gray-900 truncate">
+                        {document.title}
+                      </h3>
+                      {document.description && (
+                        <p className="mt-1 text-sm text-gray-500 line-clamp-2">
+                          {document.description}
+                        </p>
+                      )}
+                      <div className="mt-2 flex items-center justify-between text-xs text-gray-500">
+                        <span className="capitalize">
+                          {document.document_type}
+                        </span>
+                        <span>{formatFileSize(document.file_size)}</span>
+                      </div>
+                      <div className="mt-2 text-xs text-gray-500">
+                        Uploaded {formatDate(document.created_at)}
+                      </div>
+                      <div className="mt-2">
+                        <span
+                          className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getStatusColor(
+                            document.status
+                          )}`}
+                        >
+                          {getStatusIcon(document.status)} {document.status}
+                        </span>
+                      </div>
+                    </div>
                   </div>
                 </div>
-                <div className="mt-4">
-                  <h3 className="text-sm font-medium text-gray-900 truncate">
-                    {document.title}
-                  </h3>
-                  {document.description && (
-                    <p className="mt-1 text-sm text-gray-500 line-clamp-2">
-                      {document.description}
-                    </p>
-                  )}
-                  <div className="mt-2 flex items-center justify-between text-xs text-gray-500">
-                    <span className="capitalize">{document.document_type}</span>
-                    <span>{formatFileSize(document.file_size)}</span>
-                  </div>
-                  <div className="mt-2 text-xs text-gray-500">
-                    Uploaded {formatDate(document.created_at)}
-                  </div>
-                  <div className="mt-2">
-                    <span
-                      className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getStatusColor(
-                        document.status
-                      )}`}
-                    >
-                      {getStatusIcon(document.status)} {document.status}
-                    </span>
-                  </div>
-                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="text-center py-12">
+              <CloudArrowUpIcon className="mx-auto h-12 w-12 text-gray-400" />
+              <h3 className="mt-2 text-sm font-medium text-gray-900">
+                No documents
+              </h3>
+              <p className="mt-1 text-sm text-gray-500">
+                Get started by uploading your first document.
+              </p>
+              <div className="mt-6">
+                <button
+                  onClick={() => setIsUploadModalOpen(true)}
+                  className="btn-primary"
+                >
+                  <PlusIcon className="w-4 h-4 mr-2" />
+                  Upload Document
+                </button>
               </div>
             </div>
-          ))}
-        </div>
-      ) : (
-        <div className="text-center py-12">
-          <CloudArrowUpIcon className="mx-auto h-12 w-12 text-gray-400" />
-          <h3 className="mt-2 text-sm font-medium text-gray-900">
-            No documents
-          </h3>
-          <p className="mt-1 text-sm text-gray-500">
-            Get started by uploading your first document.
-          </p>
-          <div className="mt-6">
-            <button
-              onClick={() => setIsUploadModalOpen(true)}
-              className="btn-primary"
-            >
-              <PlusIcon className="w-4 h-4 mr-2" />
-              Upload Document
-            </button>
-          </div>
-        </div>
+          )}
+        </>
+      )}
+
+      {/* Advanced Search View */}
+      {currentView === "search" && documents && (
+        <AdvancedSearch
+          documents={documents}
+          onResultSelect={(result) => {
+            // Handle search result selection if needed
+            console.log("Search result selected:", result);
+          }}
+        />
+      )}
+
+      {/* Enhanced RAG Search View */}
+      {currentView === "enhanced-search" && (
+        <EnhancedRAGSearch
+          onResults={(results) => {
+            // Handle enhanced search results if needed
+            console.log("Enhanced search results:", results);
+          }}
+        />
+      )}
+
+      {/* Intelligent Search View */}
+      {currentView === "intelligent-search" && (
+        <IntelligentSearchInterface
+          onResults={(results) => {
+            // Handle intelligent search results if needed
+            console.log("Intelligent search results:", results);
+          }}
+        />
+      )}
+
+      {/* Batch Processing View */}
+      {currentView === "batch-processor" && (
+        <BatchQuestionProcessor
+          onResults={(results) => {
+            // Handle batch processing results if needed
+            console.log("Batch processing results:", results);
+          }}
+        />
+      )}
+
+      {/* Query Analytics View */}
+      {currentView === "query-analytics" && (
+        <QueryAnalyticsDashboard
+          onOptimizeQuery={(optimizedQuery) => {
+            // Handle optimized query - could switch to search view and populate the query
+            console.log("Optimized query:", optimizedQuery);
+            toast.success(
+              "Query optimized! You can now use it in any search interface."
+            );
+          }}
+        />
+      )}
+
+      {/* Document Viewer */}
+      {currentView === "viewer" && selectedDocument && (
+        <DocumentViewer
+          document={selectedDocument}
+          onError={(error) => toast.error(error)}
+        />
       )}
 
       {/* Upload Modal */}
@@ -341,14 +498,6 @@ export const Documents: React.FC = () => {
             </div>
           </div>
         </div>
-      )}
-
-      {/* Document Viewer */}
-      {isViewerOpen && selectedDocument && (
-        <DocumentViewer
-          document={selectedDocument}
-          onClose={() => setIsViewerOpen(false)}
-        />
       )}
     </div>
   );

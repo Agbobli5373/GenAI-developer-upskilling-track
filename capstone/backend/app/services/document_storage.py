@@ -200,35 +200,52 @@ class DocumentStorageService:
             Document structure information
         """
         try:
-            # Get chunk type distribution
+            # Get all chunks for the document (using actual table schema)
             result = supabase.table("document_chunks").select(
-                "chunk_type, page_number, count(*)"
+                "page_number, content"
             ).eq("document_id", document_id).execute()
             
-            if not result.data:
-                return {}
-            
-            # Organize structure data
+            # Initialize structure with default values
             structure = {
                 "chunk_types": {},
                 "page_distribution": {},
                 "total_chunks": 0
             }
             
-            for row in result.data:
-                chunk_type = row.get("chunk_type", "unknown")
-                page_num = row.get("page_number", 1)
-                count = row.get("count", 0)
+            if not result.data:
+                # Return empty structure if no chunks found
+                return structure
+            
+            # Process chunks to build structure
+            for chunk in result.data:
+                # Since we don't have chunk_type in DB, classify based on content
+                content = chunk.get("content", "")
+                if len(content) < 50 and any(word in content.lower() for word in ["chapter", "section", "title"]):
+                    chunk_type = "heading"
+                else:
+                    chunk_type = "paragraph"
                 
-                structure["chunk_types"][chunk_type] = structure["chunk_types"].get(chunk_type, 0) + count
-                structure["page_distribution"][page_num] = structure["page_distribution"].get(page_num, 0) + count
-                structure["total_chunks"] += count
+                page_num = chunk.get("page_number", 1)
+                
+                # Count chunk types
+                structure["chunk_types"][chunk_type] = structure["chunk_types"].get(chunk_type, 0) + 1
+                
+                # Count page distribution
+                structure["page_distribution"][str(page_num)] = structure["page_distribution"].get(str(page_num), 0) + 1
+                
+                # Increment total
+                structure["total_chunks"] += 1
             
             return structure
             
         except Exception as e:
             logger.error(f"Error getting structure for document {document_id}: {str(e)}")
-            return {}
+            # Return empty structure with required fields instead of empty dict
+            return {
+                "chunk_types": {},
+                "page_distribution": {},
+                "total_chunks": 0
+            }
     
     async def update_document_status(
         self,

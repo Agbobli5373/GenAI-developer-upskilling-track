@@ -30,26 +30,63 @@ async def process_document_background(
         # Update status to processing
         await document_storage.update_document_status(document_id, "processing")
         
-        # Process the document
-        processed_doc = await document_processor.process_document(
-            file_content=file_content,
-            filename=filename,
-            document_id=document_id,
-            file_type=file_type
-        )
-        
-        # Store processed document
-        success = await document_storage.store_processed_document(processed_doc, user_id)
-        
-        if not success:
-            await document_storage.update_document_status(
-                document_id, "error", "Failed to store processed document"
-            )
+        # Simple processing for TXT files, full processing for others
+        if file_type.lower() == "txt":
+            # Simple text processing
+            try:
+                content = file_content.decode('utf-8')
+                paragraphs = content.split('\n\n')  # Simple paragraph splitting
+                
+                # Store simple chunks (corrected schema)
+                chunks_data = []
+                for idx, paragraph in enumerate(paragraphs):
+                    if paragraph.strip():
+                        chunk_data = {
+                            "document_id": document_id,
+                            "chunk_index": idx,
+                            "content": paragraph.strip(),
+                            "page_number": 1,
+                            "start_position": idx * 100,
+                            "end_position": idx * 100 + len(paragraph)
+                        }
+                        chunks_data.append(chunk_data)
+                
+                # Insert chunks into database
+                if chunks_data:
+                    supabase.table("document_chunks").insert(chunks_data).execute()
+                
+                await document_storage.update_document_status(document_id, "processed")
+                
+            except Exception as txt_error:
+                await document_storage.update_document_status(
+                    document_id, "error", f"TXT processing failed: {str(txt_error)}"
+                )
+        else:
+            # Use full processor for PDF/DOCX
+            try:
+                processed_doc = await document_processor.process_document(
+                    file_content=file_content,
+                    filename=filename,
+                    document_id=document_id,
+                    file_type=file_type
+                )
+                
+                # Store processed document
+                success = await document_storage.store_processed_document(processed_doc, user_id)
+                
+                if not success:
+                    await document_storage.update_document_status(
+                        document_id, "error", "Failed to store processed document"
+                    )
+            except Exception as proc_error:
+                await document_storage.update_document_status(
+                    document_id, "error", f"Full processing failed: {str(proc_error)}"
+                )
         
     except Exception as e:
         # Update status to error
         await document_storage.update_document_status(
-            document_id, "error", str(e)
+            document_id, "error", f"Background processing failed: {str(e)}"
         )
 
 
@@ -86,12 +123,12 @@ async def upload_document(
         content = await file.read()
         
         # Upload to Supabase Storage
-        storage_response = supabase.storage.from_("documents").upload(filename, content)
-        
-        if storage_response.get("error"):
+        try:
+            storage_response = supabase.storage.from_("documents").upload(filename, content)
+        except Exception as storage_error:
             raise HTTPException(
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                detail="Failed to upload file to storage"
+                detail=f"Failed to upload file to storage: {str(storage_error)}"
             )
         
         # Create document record
@@ -416,4 +453,117 @@ async def reprocess_document(
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Reprocessing failed: {str(e)}"
+        )
+
+
+@router.post("/{document_id}/process")
+async def process_document_manually(
+    document_id: str,
+    current_user_id: str = Depends(verify_token)
+):
+    """Manually trigger document processing (for debugging)"""
+    try:
+        # Get document
+        result = supabase.table("documents").select("*").eq("id", document_id).execute()
+        
+        if not result.data:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Document not found"
+            )
+        
+        document = result.data[0]
+        
+        # Check ownership
+        if document["uploaded_by"] != current_user_id:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Not enough permissions"
+            )
+        
+        # Get file from storage
+        try:
+            file_response = supabase.storage.from_("documents").download(document["file_path"])
+            if not file_response:
+                raise HTTPException(
+                    status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                    detail="Failed to retrieve file from storage"
+                )
+        except Exception as storage_error:
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail=f"Storage error: {str(storage_error)}"
+            )
+        
+        # Process document
+        try:
+            await document_storage.update_document_status(document_id, "processing")
+            
+            # Simple text processing for debugging
+            if document["file_type"] == "txt":
+                # For TXT files, create simple chunks manually
+                content = file_response.decode('utf-8')
+                paragraphs = content.split('\n\n')  # Simple paragraph splitting
+                
+                # Store simple chunks
+                chunks_data = []
+                for idx, paragraph in enumerate(paragraphs):
+                    if paragraph.strip():
+                        chunk_data = {
+                            "id": str(uuid.uuid4()),
+                            "document_id": document_id,
+                            "chunk_index": idx,
+                            "content": paragraph.strip(),
+                            "chunk_type": "paragraph",
+                            "page_number": 1,
+                            "position": {"paragraph_index": idx, "char_start": 0, "char_end": len(paragraph)},
+                            "metadata": {"word_count": len(paragraph.split()), "char_count": len(paragraph)}
+                        }
+                        chunks_data.append(chunk_data)
+                
+                # Insert chunks into database
+                if chunks_data:
+                    supabase.table("document_chunks").insert(chunks_data).execute()
+                
+                await document_storage.update_document_status(document_id, "processed")
+                return {
+                    "message": "Document processed successfully (simple mode)", 
+                    "chunks": len(chunks_data),
+                    "content_preview": content[:200] + "..." if len(content) > 200 else content
+                }
+            
+            else:
+                # Use the full processor for other file types
+                processed_doc = await document_processor.process_document(
+                    file_content=file_response,
+                    filename=document["filename"],
+                    document_id=document_id,
+                    file_type=document["file_type"]
+                )
+                
+                success = await document_storage.store_processed_document(processed_doc, current_user_id)
+                
+                if success:
+                    await document_storage.update_document_status(document_id, "processed")
+                    return {"message": "Document processed successfully", "chunks": len(processed_doc.chunks)}
+                else:
+                    await document_storage.update_document_status(document_id, "error", "Failed to store processed document")
+                    raise HTTPException(
+                        status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                        detail="Failed to store processed document"
+                    )
+                
+        except Exception as proc_error:
+            await document_storage.update_document_status(document_id, "error", str(proc_error))
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail=f"Processing failed: {str(proc_error)}"
+            )
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to process document: {str(e)}"
         )
