@@ -23,3 +23,10 @@ Client (client@legaltech.com)
 Can view their own documents
 Can request legal services
 Read-only access to most features
+
+
+
+    "langchain",
+    "langchain-google-genai",
+    "numpy",
+    "scikit-learn"

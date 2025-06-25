@@ -26,15 +26,18 @@ export const Documents: React.FC = () => {
     }
   );
   const [uploading, setUploading] = useState(false);
-  const [selectedDocument, setSelectedDocument] = useState<Document | null>(null);
+  const [selectedDocument, setSelectedDocument] = useState<Document | null>(
+    null
+  );
   const [isViewerOpen, setIsViewerOpen] = useState(false);
 
   const {
     data: documents,
     isLoading,
     refetch,
-  } = useQuery("documents", () =>
-    documentsAPI.getDocuments().then((res) => res.data),
+  } = useQuery(
+    "documents",
+    () => documentsAPI.getDocuments().then((res) => res.data),
     {
       refetchInterval: 5000, // Auto-refresh every 5 seconds to check processing status
     }

@@ -49,17 +49,23 @@ class Settings(BaseSettings):
     # Google Gemini
     GOOGLE_API_KEY: str = ""
     
+    # JWT Settings
+    ALGORITHM: str = "HS256"
+    ACCESS_TOKEN_EXPIRE_MINUTES: int = 30
+    REFRESH_TOKEN_EXPIRE_MINUTES: int = 60 * 24 * 7  # 7 days
+    
+    # Vector Search Settings
+    EMBEDDING_DIMENSION: int = 768  # Gemini embedding dimension
+    DEFAULT_SIMILARITY_THRESHOLD: float = 0.7
+    MAX_SEARCH_RESULTS: int = 20
+    MAX_RAG_CONTEXT_CHUNKS: int = 5
+
     # File upload
     MAX_FILE_SIZE: int = 50 * 1024 * 1024  # 50MB
     ALLOWED_FILE_TYPES: List[str] = ["pdf", "docx", "txt"]
     
     # Storage
     UPLOAD_DIR: Path = Path("uploads")
-    
-    # JWT
-    ACCESS_TOKEN_EXPIRE_MINUTES: int = 30
-    REFRESH_TOKEN_EXPIRE_MINUTES: int = 60 * 24 * 7  # 7 days
-    ALGORITHM: str = "HS256"
 
 
 settings = Settings()

@@ -1,5 +1,5 @@
 import axios, { AxiosResponse } from 'axios'
-import { 
+import {
     User, UserCreate, UserLogin, AuthResponse, Document, DocumentCreate, DocumentUpdate,
     DocumentChunk, DocumentStructure, DocumentSearchResult
 } from '@/types'
@@ -102,7 +102,7 @@ export const documentsAPI = {
 
     // New document processing endpoints
     getDocumentChunks: (
-        documentId: string, 
+        documentId: string,
         params?: { chunk_type?: string; page_number?: number }
     ): Promise<AxiosResponse<DocumentChunk[]>> =>
         api.get(`/documents/${documentId}/chunks`, { params }),
@@ -111,12 +111,12 @@ export const documentsAPI = {
         api.get(`/documents/${documentId}/structure`),
 
     searchDocumentChunks: (
-        documentId: string, 
-        query: string, 
+        documentId: string,
+        query: string,
         limit?: number
     ): Promise<AxiosResponse<DocumentSearchResult>> =>
-        api.get(`/documents/${documentId}/search`, { 
-            params: { q: query, limit } 
+        api.get(`/documents/${documentId}/search`, {
+            params: { q: query, limit }
         }),
 
     reprocessDocument: (documentId: string): Promise<AxiosResponse<{ message: string; document_id: string }>> =>
