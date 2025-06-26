@@ -39,3 +39,4 @@ sample_cv.pdf
 *.pdf
 logs/
 temp/
+*/node_modules

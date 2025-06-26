@@ -1,0 +1,39 @@
+# Core RAG and ML libraries
+langchain==0.1.0
+langchain-community==0.0.13
+langchain-google-genai==0.0.6
+chromadb==0.4.22
+sentence-transformers==2.2.2
+google-generativeai==0.3.2
+tiktoken==0.5.2
+
+# Evaluation and Monitoring
+langsmith==0.0.87
+ragas==0.1.0
+deepeval==0.20.58
+trulens-eval==0.19.2
+
+# Dashboard and Visualization
+streamlit==1.29.0
+plotly==5.17.0
+pandas==2.1.4
+numpy==1.24.3
+matplotlib==3.8.2
+seaborn==0.13.0
+
+# Logging and Monitoring
+python-json-logger==2.0.7
+structlog==23.2.0
+prometheus-client==0.19.0
+
+# Data Processing
+datasets==2.16.1
+python-dotenv==1.0.0
+pydantic==2.5.3
+pyyaml==6.0.1
+
+# Testing and Utilities
+pytest==7.4.4
+pytest-asyncio==0.23.2
+jupyter==1.0.0
+notebook==7.0.6
