@@ -11,7 +11,6 @@ This repository contains a collection of projects and exercises for learning and
 - **week_two/**: Prompt engineering playground and exercises (Jupyter notebook).
 - **week_three/**: Memory management and LLM service demos in Python.
 - **week_four/**: RAG CV analyzer notebook.
-- **week_five/**: Placeholder for advanced backend/frontend projects.
 - **java/**: Java-based projects:
   - **Contextual Memory Chatbot**: Spring Boot chatbot with contextual memory.
   - **easy-rag**: Java RAG sample using LangChain4j.
