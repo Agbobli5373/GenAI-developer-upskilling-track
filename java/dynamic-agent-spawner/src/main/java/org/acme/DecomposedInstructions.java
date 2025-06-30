@@ -1,4 +1,7 @@
 package org.acme;
 
-public class DecomposedInstructions {
-}
+// This Record models the JSON structure we want from the LLM
+public record DecomposedInstructions(
+        String plannerInstructions,
+        String writerInstructions
+) {}

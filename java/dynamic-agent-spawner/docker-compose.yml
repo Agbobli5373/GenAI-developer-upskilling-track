@@ -1,0 +1,17 @@
+services:
+  ollama:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "11434:11434"
+    container_name: ollama
+    volumes:
+      - ollama_data:/root/.ollama
+
+networks:
+    default:
+      driver: bridge
+
+volumes:
+  ollama_data:

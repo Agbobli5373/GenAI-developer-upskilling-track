@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Agent Spawner</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-robot"></i> Dynamic Agent Spawner</h1>
+            <p>AI-powered task execution with intelligent agent coordination</p>
+        </header>
+
+        <main>
+            <div class="input-section">
+                <div class="form-group">
+                    <label for="taskInput">
+                        <i class="fas fa-tasks"></i> Describe your task or goal:
+                    </label>
+                    <textarea
+                        id="taskInput"
+                        placeholder="Example: Write a short, upbeat, and encouraging twitter post about learning Langchain4j."
+                        rows="4"
+                    ></textarea>
+                </div>
+
+                <button id="executeBtn" class="execute-btn">
+                    <i class="fas fa-play"></i> Execute Task
+                </button>
+            </div>
+
+            <div class="results-section" id="resultsSection" style="display: none;">
+                <h2><i class="fas fa-cogs"></i> Execution Results</h2>
+
+                <div class="step-card">
+                    <div class="step-header">
+                        <i class="fas fa-lightbulb"></i>
+                        <h3>Step 1: Instruction Generation</h3>
+                        <div class="loading-spinner" id="step1Spinner"></div>
+                    </div>
+                    <div class="step-content" id="step1Content">
+                        <div class="instruction-block">
+                            <h4>Planner Instructions:</h4>
+                            <p id="plannerInstructions">Generating...</p>
+                        </div>
+                        <div class="instruction-block">
+                            <h4>Writer Instructions:</h4>
+                            <p id="writerInstructions">Generating...</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="step-card">
+                    <div class="step-header">
+                        <i class="fas fa-sitemap"></i>
+                        <h3>Step 2: Planning Phase</h3>
+                        <div class="loading-spinner" id="step2Spinner"></div>
+                    </div>
+                    <div class="step-content" id="step2Content">
+                        <p id="planOutput">Waiting for planner agent...</p>
+                    </div>
+                </div>
+
+                <div class="step-card">
+                    <div class="step-header">
+                        <i class="fas fa-pen-fancy"></i>
+                        <h3>Step 3: Content Creation</h3>
+                        <div class="loading-spinner" id="step3Spinner"></div>
+                    </div>
+                    <div class="step-content" id="step3Content">
+                        <div class="final-output" id="finalOutput">
+                            Waiting for writer agent...
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="error-section" id="errorSection" style="display: none;">
+                <div class="error-card">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <h3>Error Occurred</h3>
+                    <p id="errorMessage"></p>
+                    <button id="retryBtn" class="retry-btn">
+                        <i class="fas fa-redo"></i> Try Again
+                    </button>
+                </div>
+            </div>
+        </main>
+
+        <footer>
+            <p>Powered by Quarkus & LangChain4j</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
